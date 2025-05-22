@@ -1,0 +1,53 @@
+name: 'Github Information'
+description: 'Retrieve Github Information'
+inputs:
+  github-token:
+    description: 'Github Token'
+    required: true
+  pr-number:
+    description: 'Pull Request Number for fetching PR information'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Github Information
+      run: |
+        echo "Fetching github information"
+        OS_SUFFIX=""
+        ARCH_SUFFIX=""
+        
+        case "$RUNNER_OS" in
+          "Windows")
+            OS_SUFFIX="windows"
+            ARCH_SUFFIX="amd64.exe"
+            ;;
+          "Linux")
+            OS_SUFFIX="linux"
+            if [ "$RUNNER_ARCH" == "aarch64" ]; then
+              ARCH_SUFFIX="arm64"
+            else
+              ARCH_SUFFIX="amd64"
+            fi
+            ;;
+          "macOS")
+            OS_SUFFIX="macos"
+            if [ "$RUNNER_ARCH" == "arm64" ]; then
+              ARCH_SUFFIX="arm64"
+            else
+              ARCH_SUFFIX="amd64"
+            fi
+            ;;
+          *)
+            echo "Unsupported operating system: $RUNNER_OS"
+            exit 1
+            ;;
+        esac
+
+        BINARY_NAME="github-info-v1.0.0-${OS_SUFFIX}-${ARCH_SUFFIX}"
+
+        chmod +x ${{ github.action_path }}/${BINARY_NAME}
+        ${{ github.action_path }}/${BINARY_NAME}
+      shell: bash
+      env:
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_PR_NUMBER: ${{ inputs.pr-number }}

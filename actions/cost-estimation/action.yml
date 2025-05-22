@@ -1,0 +1,77 @@
+name: 'Cloudability Cost Estimation v1.0.0'
+description: 'Estimate the cost of a deployment'
+inputs:
+  github-token:
+    description: 'Github Token'
+    required: true
+  pr-number:
+    description: 'Pull Request Number'
+    required: true
+  cloudability-host:
+    description: 'Cloudability Host URL for fetching governance metadata'
+    required: true
+  fd-env-id:
+    description: 'Frontdoor Environment ID for Cloudability Organization'
+    required: true
+  deployment-name:
+    description: 'Name for the deployment'
+    required: true
+  provider-accounts:
+    description: 'Mapping of Terraform providers in the stack and their associated account'
+    required: true
+  tf-plan:
+    description: 'Path to the Terraform plan file with the terraform plan output in json format'
+    required: true
+  resource-usage:
+    description: 'Optional path to the Cloudability resource usage file in json format'
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Cloudability Governance Cost Estimation
+      run: |
+        echo "Estimating cost with Cloudability Governance"
+
+        OS_SUFFIX=""
+        ARCH_SUFFIX=""
+        
+        case "$RUNNER_OS" in
+          "Windows")
+            OS_SUFFIX="windows"
+            ARCH_SUFFIX="amd64.exe"
+            ;;
+          "Linux")
+            OS_SUFFIX="linux"
+            if [ "$RUNNER_ARCH" == "aarch64" ]; then
+              ARCH_SUFFIX="arm64"
+            else
+              ARCH_SUFFIX="amd64"
+            fi
+            ;;
+          "macOS")
+            OS_SUFFIX="macos"
+            if [ "$RUNNER_ARCH" == "arm64" ]; then
+              ARCH_SUFFIX="arm64"
+            else
+              ARCH_SUFFIX="amd64"
+            fi
+            ;;
+          *)
+            echo "Unsupported operating system: $RUNNER_OS"
+            exit 1
+            ;;
+        esac
+
+        BINARY_NAME="cost-estimation-v1.0.0-${OS_SUFFIX}-${ARCH_SUFFIX}"
+        chmod +x "${{ github.action_path }}/${BINARY_NAME}"
+        "${{ github.action_path }}/${BINARY_NAME}"
+      shell: bash
+      env:
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_PR_NUMBER: ${{ inputs.pr-number }}
+        INPUT_CLOUDABILITY_HOST: ${{ inputs.cloudability-host }}
+        INPUT_FD_ENV_ID: ${{ inputs.fd-env-id }}
+        INPUT_DEPLOYMENT_NAME: ${{ inputs.deployment-name }}
+        INPUT_PROVIDER_ACCOUNTS: ${{ inputs.provider-accounts }}
+        INPUT_TF_PLAN: ${{ inputs.tf-plan }}
+        INPUT_RESOURCE_USAGE: ${{ inputs.resource-usage }}

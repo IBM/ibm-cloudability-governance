@@ -1,0 +1,53 @@
+name: 'Cloudability Metadata'
+description: 'Retrieve Cloudability Metadata for a repository deployment'
+inputs:
+  cloudability-host:
+    description: 'Cloudability Host URL for fetching governanve metadata'
+    required: true
+  fd-env-id:
+    description: 'Frontdoor Environment ID for Cloudability Organization'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Cloudability Governance Metadata
+      run: |
+        echo "Fetching Cloudability Governance metadata"
+        OS_SUFFIX=""
+        ARCH_SUFFIX=""
+        
+        case "$RUNNER_OS" in
+          "Windows")
+            OS_SUFFIX="windows"
+            ARCH_SUFFIX="amd64.exe"
+            ;;
+          "Linux")
+            OS_SUFFIX="linux"
+            if [ "$RUNNER_ARCH" == "aarch64" ]; then
+              ARCH_SUFFIX="arm64"
+            else
+              ARCH_SUFFIX="amd64"
+            fi
+            ;;
+          "macOS")
+            OS_SUFFIX="macos"
+            if [ "$RUNNER_ARCH" == "arm64" ]; then
+              ARCH_SUFFIX="arm64"
+            else
+              ARCH_SUFFIX="amd64"
+            fi
+            ;;
+          *)
+            echo "Unsupported operating system: $RUNNER_OS"
+            exit 1
+            ;;
+        esac
+
+        BINARY_NAME="metadata-v1.0.0-${OS_SUFFIX}-${ARCH_SUFFIX}"
+
+        chmod +x "${{ github.action_path }}/${BINARY_NAME}"
+        "${{ github.action_path }}/${BINARY_NAME}"
+      shell: bash
+      env:
+        INPUT_CLOUDABILITY_HOST: ${{ inputs.cloudability-host }}
+        INPUT_FD_ENV_ID: ${{ inputs.fd-env-id }}

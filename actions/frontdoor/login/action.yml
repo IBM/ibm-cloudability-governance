@@ -1,0 +1,57 @@
+name: Frontdoor login
+description: Login to Frontdoor and fetch the IBM-Apptio authentication token
+inputs:
+  fd-url:
+    description: "Frontdoor URL"
+    required: true
+  fd-public-key:
+    description: "Public key for Frontdoor Access"
+    required: true
+  fd-secret-key:
+    description: "Secret key for Frontdoor Access"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Frontdoor Login
+      shell: bash
+      run: |
+        echo "Login to Frontdoor"
+        
+        OS_SUFFIX=""
+        ARCH_SUFFIX=""
+        
+        case "$RUNNER_OS" in
+          "Windows")
+            OS_SUFFIX="windows"
+            ARCH_SUFFIX="amd64.exe"
+            ;;
+          "Linux")
+            OS_SUFFIX="linux"
+            if [ "$RUNNER_ARCH" == "aarch64" ]; then
+              ARCH_SUFFIX="arm64"
+            else
+              ARCH_SUFFIX="amd64"
+            fi
+            ;;
+          "macOS")
+            OS_SUFFIX="macos"
+            if [ "$RUNNER_ARCH" == "arm64" ]; then
+              ARCH_SUFFIX="arm64"
+            else
+              ARCH_SUFFIX="amd64"
+            fi
+            ;;
+          *)
+            echo "Unsupported operating system: $RUNNER_OS"
+            exit 1
+            ;;
+        esac
+
+        BINARY_NAME="frontdoor-login-v1.0.0-${OS_SUFFIX}-${ARCH_SUFFIX}"
+        chmod +x "${{ github.action_path }}/${BINARY_NAME}"
+        "${{ github.action_path }}/${BINARY_NAME}"
+      env:
+        INPUT_FD_URL: ${{ inputs.fd-url }}
+        INPUT_FD_PUBLIC_KEY: ${{ inputs.fd-public-key }}
+        INPUT_FD_SECRET_KEY: ${{ inputs.fd-secret-key }}
