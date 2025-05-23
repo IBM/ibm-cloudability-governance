@@ -82,19 +82,19 @@ jobs:
 
 Now assuming a directory structure for a single repository with multiple deployments
 ```
-	/infrastructure-repo
-			|
-			|--- /common
-			|		|--- /aws
-			|		|		|--- resources.tf
-			|		|
-			|--- /deployment
-			|		|
-			|		|--- /alpha
-			|		|		|--- main.tf
-			|		|
-			|		|--- /beta
-			|		|		|--- main.tf
+/infrastructure-repo
+    |
+    |--- /common
+    |     |---/aws
+    |           |--- resources.tf
+    |     
+    |--- /deployment
+    |         |
+    |         |--- /alpha
+    |         |       |--- main.tf
+    |         |
+    |         |--- /beta
+    |         |       |--- main.tf
 ```
 
 <details><summary> Handling terraform plan for all deployments with a single workflow</summary>
