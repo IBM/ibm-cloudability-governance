@@ -407,7 +407,7 @@ Alternatively, this is the setup for a scenario with a specific account alias.
                 "vendor": "aws"
               },
               "*": {
-                "account_id": "${{ secrets.AWS_ACCOUNT_ID }}", 
+                "account_id": "${{ secrets.SECOND_AWS_ACCOUNT_ID }}", 
                 "vendor": "aws"
               }
             }
