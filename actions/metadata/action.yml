@@ -43,7 +43,7 @@ runs:
             ;;
         esac
 
-        BINARY_NAME="metadata-v1.0.0-${OS_SUFFIX}-${ARCH_SUFFIX}"
+        BINARY_NAME="metadata-v0.1.0-${OS_SUFFIX}-${ARCH_SUFFIX}"
 
         chmod +x "${{ github.action_path }}/${BINARY_NAME}"
         "${{ github.action_path }}/${BINARY_NAME}"
