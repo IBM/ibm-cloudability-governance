@@ -86,15 +86,15 @@ Now assuming a directory structure for a single repository with multiple deploym
 			|
 			|--- /common
 			|		|--- /aws
-			|		|	    |--- resources.tf
-			|		|	
-			|--- /deployments
+			|		|       |--- resources.tf
+			|		|
+			|--- /deployment
 			|		|
 			|		|--- /alpha
-			|		|		|--- main.tf
+			|		|       |--- main.tf
 			|		|
 			|		|--- /beta
-			|		|		|--- main.tf
+			|		|       |--- main.tf
 ```
 
 <details><summary> Handling terraform plan for all deployments with a single workflow</summary>
