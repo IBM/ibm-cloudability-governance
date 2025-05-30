@@ -1,4 +1,4 @@
-name: 'Cloudability Policy Evaluation v0.1.0'
+name: 'Cloudability Policy Evaluation v0.1.1'
 description: 'Evaluate a deployment against Cloudability Governance policies'
 inputs:
   github-token:
@@ -62,7 +62,7 @@ runs:
             exit 1
             ;;
         esac
-        BINARY_NAME="policy-evaluation-v0.1.0-${OS_SUFFIX}-${ARCH_SUFFIX}"
+        BINARY_NAME="policy-evaluation-v0.1.1-${OS_SUFFIX}-${ARCH_SUFFIX}"
 
         chmod +x "${{ github.action_path }}/${BINARY_NAME}"
         "${{ github.action_path }}/${BINARY_NAME}"
