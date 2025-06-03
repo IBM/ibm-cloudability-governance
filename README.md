@@ -23,7 +23,7 @@ Here are some different sample setups and corresponding ways to generate and add
 
 <details><summary> A repository with IaC code for a single deployment</summary>
 
-```
+``` yaml
 name: Demo Pipeline
 run-name: Deployment
 on:
@@ -99,7 +99,7 @@ Now assuming a directory structure for a single repository with multiple deploym
 
 <details><summary> Handling terraform plan for all deployments with a single workflow</summary>
 
-```
+``` yaml
 name: Demo Pipeline
 run-name: Deployment
 on:
@@ -182,7 +182,7 @@ jobs:
 
 <details><summary>Handling terraform plan with one workflow for each deployment</summary>
 
-```
+``` yaml
 name: Demo Pipeline
 run-name: Deployment
 on:
@@ -237,7 +237,7 @@ Terraform plan could also be uploaded as an artifact in a separate job.
 
 <details><summary>Terraform plan as artifact</summary>
 
-```
+``` yaml
       - name: Download tfplan
         uses: actions/download-artifact@v4
         with:
@@ -259,7 +259,7 @@ The inputs for this step can be set as repository level variables and secrets.
 
 <details><summary><code>Get Frontdoor token</code></summary>
 
-```
+``` yaml
       - name: Get Frontdoor token
         uses: ibm/ibm-cloudability-governance-action-template/actions/frontdoor/login@v0.1.0
         with:
@@ -277,7 +277,7 @@ Metadata associated with a pull-request and Cloudability Governance is required 
 
 <details><summary><code>Get Github PR metadata</code></summary>
 
-```
+``` yaml
       - name: Get GitHub PR metadata
         uses: ibm/ibm-cloudability-governance-action-template/actions/github-info@v0.1.0
         with:
@@ -293,7 +293,7 @@ Metadata associated with a pull-request and Cloudability Governance is required 
 
 <details><summary><code>Cloudability Governance Metadata Retrieval</code></summary>
 
-```
+``` yaml
       - name: Run Cloudability Governance Metadata Retrieval
         uses: ibm/ibm-cloudability-governance-action-template/actions/metadata@v0.1.0
         with:
@@ -329,7 +329,7 @@ Here is an example setup where a default account is used.
 
 <details><summary><code>Governance actions for a deployment to a single cloud vendor account (using * as key in provider-accounts map)</code></summary>
 
-```
+``` yaml
       - name: Run Cloudability Cost Estimation
         uses: ibm/ibm-cloudability-governance-action-template/actions/cost-estimation@v0.1.0
         with:
@@ -391,7 +391,7 @@ Alternatively, this is the setup for a scenario with a specific account alias.
 
 <details><summary><code>Governance actions for a deployment to multiple cloud vendor accounts (using fully qualified key name in provider-accounts map)</code></summary>
 
-```
+``` yaml
       - name: Run Cloudability Cost Estimation
         uses: ibm/ibm-cloudability-governance-action-template/actions/cost-estimation@v0.1.0
         with:
@@ -424,7 +424,7 @@ If using YAML file, you can use [js-yaml](https://github.com/nodeca/js-yaml) and
 
 <details><summary><code>Adding usage input </code></summary>
 
-```
+``` yaml
       - name: Install js-yaml
         id: js-yaml
         run: npm install -g js-yaml
