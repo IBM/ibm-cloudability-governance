@@ -1,4 +1,4 @@
-name: 'Cloudability Cost Estimation v0.1.2'
+name: 'Cloudability Cost Estimation v0.1.3'
 description: 'Estimate the cost of a deployment'
 inputs:
   github-token:
@@ -62,7 +62,7 @@ runs:
             ;;
         esac
 
-        BINARY_NAME="cost-estimation-v0.1.2-${OS_SUFFIX}-${ARCH_SUFFIX}"
+        BINARY_NAME="cost-estimation-v0.1.3-${OS_SUFFIX}-${ARCH_SUFFIX}"
         chmod +x "${{ github.action_path }}/${BINARY_NAME}"
         "${{ github.action_path }}/${BINARY_NAME}"
       shell: bash
