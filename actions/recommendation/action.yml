@@ -1,4 +1,4 @@
-name: 'Cloudability Recommendation v0.1.3'
+name: 'Cloudability Recommendation v0.1.4'
 description: 'Resource Recommendations for a deployment'
 
 inputs:
@@ -25,7 +25,7 @@ inputs:
     required: true
   resource-usage:
     description: 'Optional path to the Cloudability resource usage file in json format'
-    required: true
+    required: false
 
 runs:
   using: 'composite'
@@ -63,7 +63,7 @@ runs:
             ;;
         esac
 
-        BINARY_NAME="recommendation-v0.1.3-${OS_SUFFIX}-${ARCH_SUFFIX}"
+        BINARY_NAME="recommendation-v0.1.4-${OS_SUFFIX}-${ARCH_SUFFIX}"
         chmod +x "${{ github.action_path }}/${BINARY_NAME}"
         "${{ github.action_path }}/${BINARY_NAME}"
       shell: bash
