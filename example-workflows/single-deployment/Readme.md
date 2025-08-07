@@ -15,18 +15,17 @@ In this workflow example, we initiate Governance worflow when a pull-request is 
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-    paths:
-    - 'common/aws/**' # common module used across deployments
-    - 'envs/region-a/**' # specific module against which to run Governance Action
 ```
-ensures that if a pull request makes a change to `envs/region-a` then the workflow action will get triggered. 
+ensures that if a pull request is created/updated then the workflow action will get triggered. 
 
 
 ### Account setup 
 
 Providing a proider account mapping allows Cloudability Governance to consider any custom pricing that might be available for an account when giving cost estimations. 
 
-This structure is a mapping of provider alias to the corresponding AccountID and Cloud vendor
+This structure is a mapping of provider alias to the corresponding AccountID and Cloud vendor. 
+
+The wildcard `*` indicates the default account information to use if a specific providers information is not set. 
 
 ```
 - name: Run Cloudability Cost Estimation

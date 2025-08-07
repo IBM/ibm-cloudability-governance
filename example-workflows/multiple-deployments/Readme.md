@@ -1,6 +1,6 @@
 ## Structure
 
-Assuming that an IaC repository contains code for multipule regions contained within different directories and some common modules - 
+Assuming that an IaC repository contains code for multiple regions contained within different directories and some common modules - 
 
 
 ```
@@ -37,7 +37,9 @@ ensures that if a pull request makes a change to `envs/region-a` then the workfl
 
 Providing a proider account mapping allows Cloudability Governance to consider any custom pricing that might be available for an account when giving cost estimations. 
 
-This structure is a mapping of provider alias to the corresponding AccountID and Cloud vendor
+This structure is a mapping of provider alias to the corresponding AccountID and Cloud vendor.
+
+The wildcard `*` indicates the default account information to use if a specific providers information is not set. 
 
 ```
 - name: Run Cloudability Cost Estimation
