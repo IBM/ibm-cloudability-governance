@@ -32,31 +32,22 @@ jobs:
       - name: Generate tfplan in the prod directory
         id: tf
         run: |
-          cd envs/prod
-          echo "Current Directory: $(pwd)"
           terraform init
           terraform plan -refresh=false -lock=false -input=false -out=tfplan
           terraform show -json tfplan > tfplan.json
      
       - name: Redact secrets from tfplan
         run: |
-          cd envs/prod
           sed -i 's/"password":"[^"]*"/"password":""/g' tfplan.json
           sed -i 's/"secret_string":"{[^}]*}"/"secret_string":""/g' tfplan.json
 
-      - name: Print tfplan
-        run: |
-          cd envs/prod
-          wc -l tfplan.json
-          cat tfplan.json
 
       # check if usage.json file exists
       - name: find usage.json
         id: usage
         run: |
-          cd envs/prod
           if [ -f usage.json ]; then
-            echo "USAGE_PATH=envs/prod/usage.json" >> "$GITHUB_OUTPUT"
+            echo "USAGE_PATH=usage.json" >> "$GITHUB_OUTPUT"
           else
             echo "USAGE_PATH=" >> "$GITHUB_OUTPUT"
           fi
@@ -100,7 +91,7 @@ jobs:
                 "vendor": "aws"
               }
             }
-          tf-plan: "envs/prod/tfplan.json"
+          tf-plan: "tfplan.json"
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
 
       - name: Run Cloudability Governance Policy Evaluation
@@ -123,7 +114,7 @@ jobs:
                 "vendor": "aws"
               }
             }
-          tf-plan: "envs/prod/tfplan.json"
+          tf-plan: "tfplan.json"
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
 
       - name: Run Cloudability Recommendation
@@ -137,7 +128,7 @@ jobs:
           deployment-name: "governance-demo-prod"
           provider-accounts: |
             {
-              "module.database:aws_usw2": {
+              "aws_usw2": {
                 "account_id": "${{ secrets.AWS_ACCOUNT_ID }}", 
                 "vendor": "aws"
               },
@@ -146,5 +137,5 @@ jobs:
                 "vendor": "aws"
               }
             }
-          tf-plan: "envs/prod/tfplan.json"
+          tf-plan: "tfplan.json"
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}

@@ -5,7 +5,7 @@ on:
     types: [opened, reopened, synchronize]
     paths:
     - 'common/aws/**' # common module used across deployments
-    - 'envs/region-a/**' # specific module against which to run Governance Action
+    - 'regions/region-a/**' # specific module against which to run Governance Action
 
 jobs:
   cloudability-governance:
@@ -35,7 +35,7 @@ jobs:
       - name: Generate tfplan in the prod directory
         id: tf
         run: |
-          cd envs/prod
+          cd regions/region-a
           echo "Current Directory: $(pwd)"
           terraform init
           terraform plan -refresh=false -lock=false -input=false -out=tfplan
@@ -43,23 +43,17 @@ jobs:
      
       - name: Redact secrets from tfplan
         run: |
-          cd envs/prod
+          cd regions/region-a
           sed -i 's/"password":"[^"]*"/"password":""/g' tfplan.json
           sed -i 's/"secret_string":"{[^}]*}"/"secret_string":""/g' tfplan.json
-
-      - name: Print tfplan
-        run: |
-          cd envs/prod
-          wc -l tfplan.json
-          cat tfplan.json
 
       # check if usage.json file exists
       - name: find usage.json
         id: usage
         run: |
-          cd envs/prod
+          cd regions/region-a
           if [ -f usage.json ]; then
-            echo "USAGE_PATH=envs/prod/usage.json" >> "$GITHUB_OUTPUT"
+            echo "USAGE_PATH=regions/region-a/usage.json" >> "$GITHUB_OUTPUT"
           else
             echo "USAGE_PATH=" >> "$GITHUB_OUTPUT"
           fi
@@ -103,7 +97,7 @@ jobs:
                 "vendor": "aws"
               }
             }
-          tf-plan: "envs/prod/tfplan.json"
+          tf-plan: "regions/region-a/tfplan.json"
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
 
       - name: Run Cloudability Governance Policy Evaluation
@@ -126,7 +120,7 @@ jobs:
                 "vendor": "aws"
               }
             }
-          tf-plan: "envs/prod/tfplan.json"
+          tf-plan: "regions/region-a/tfplan.json"
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
 
       - name: Run Cloudability Recommendation
@@ -149,5 +143,5 @@ jobs:
                 "vendor": "aws"
               }
             }
-          tf-plan: "envs/prod/tfplan.json"
+          tf-plan: "regions/region-a/tfplan.json"
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}

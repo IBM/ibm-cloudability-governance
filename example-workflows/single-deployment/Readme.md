@@ -38,16 +38,16 @@ The wildcard `*` indicates the default account information to use if a specific 
           fd-env-id: ${{ vars.FD_ENV_ID }}
           deployment-name: "governance-demo-prod"
           provider-accounts: |
-             {
-              "module.database:aws_region_a": {
-                "account_id": "${{ secrets.AWS_ACCOUNT_REGION_A }}", 
+            {
+              "aws_usw2": {
+                "account_id": "${{ secrets.AWS_ACCOUNT_ID }}", 
                 "vendor": "aws"
               },
               "*": {
-                "account_id": "${{ secrets.SECONDARY_AWS_ACCOUNT_ID }}", 
+                "account_id": "${{ secrets.SECOND_AWS_ACCOUNT_ID }}", 
                 "vendor": "aws"
               }
             }
-          tf-plan: "envs/prod/tfplan.json"
+          tf-plan: "tfplan.json"
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
 ```

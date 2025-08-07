@@ -28,9 +28,9 @@ on:
     types: [opened, reopened, synchronize]
     paths:
     - 'common/aws/**' # common module used across deployments
-    - 'envs/region-a/**' # specific module against which to run Governance Action
+    - 'regions/region-a/**' # specific module against which to run Governance Action
 ```
-ensures that if a pull request makes a change to `envs/region-a` then the workflow action will get triggered. 
+ensures that if a pull request makes a change to `regions/region-a` then the workflow action will get triggered. 
 
 
 ### Account setup 
@@ -62,6 +62,6 @@ The wildcard `*` indicates the default account information to use if a specific 
                 "vendor": "aws"
               }
             }
-          tf-plan: "envs/prod/tfplan.json"
+          tf-plan: "regions/region-a/tfplan.json"
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
 ```
