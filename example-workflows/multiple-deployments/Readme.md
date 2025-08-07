@@ -10,12 +10,12 @@ Assuming that an IaC repository contains code for multiple regions contained wit
                  /aws
                     | ----- resources.tf
     |
-    | -----    /regions
+    | ----- /regions
                 |
-               /region-a
+               	 /region-a
                     | ----- main.tf
                 |
-               /region-b
+                 /region-b
                     | ----- main.tf
 
 ```
