@@ -1,17 +1,17 @@
-name: Workflow for a single deployment
+name: Workflow for terragrunt run-all deployments
 run-name: Deployment Run
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+    paths:
+    - 'terragrunt/*'
 
 jobs:
-  cloudability-governance:
+  plan:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
-      pull-requests: write
-      checks: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,37 +20,81 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4.1.0
         with:
           aws-region: us-west-2
-          role-to-assume: ${{ secrets.AWS_ROLE }} 
-          role-session-name: ${{ github.run_id }} 
-
-      - name: Setup Terraform with specified version on the runner
-        uses: hashicorp/setup-terraform@v3
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          role-session-name: ${{ github.run_id }}
+      
+      - name: Install Terragrunt and OpenTofu
+        uses: gruntwork-io/terragrunt-action@v3
         with:
-          terraform_version: 1.11.4
-          terraform_wrapper: false
+          tg_version: '0.82.2'
+          tofu_version: '1.10.1'
 
-      - name: Generate tfplan in the prod directory
-        id: tf
+      - name: Run terragrunt plan
         run: |
-          terraform init
-          terraform plan -refresh=false -lock=false -input=false -out=tfplan
-          terraform show -json tfplan > tfplan.json
-     
+          cd terragrunt
+          terragrunt run-all plan \    
+          --terragrunt-non-interactive \
+          --terragrunt-parallelism 5 \
+          --terragrunt-strict-include \
+          --terragrunt-include-dir component-A \
+          --terragrunt-include-dir component-B \
+          -out tgplan.log
+
+      - name: Upload tgplan as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgplan.log
+          path: terragrunt/tgplan.log
+  cloudability-governance:
+    needs: plan
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      pull-requests: write
+      contents: read
+      checks: write
+    strategy:
+      matrix:
+        components: [component-A, component-B]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: us-west-2
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          role-session-name: ${{ github.run_id }}
+      
+      - name: Install Terragrunt and OpenTofu
+        uses: gruntwork-io/terragrunt-action@v3
+        with:
+          tg_version: '0.82.2'
+          tofu_version: '1.10.1'
+      
+      - name: Download plan output
+        uses: actions/download-artifact@v4
+        with:
+          name: tgplan.log
+          path: terragrunt/tgplan.log
+      
+      # only include one component dir to get the plan json for a single component
+      - name: Convert plan output into json format each component
+        run: |
+          cd terragrunt
+          terragrunt run-all show \    
+          --terragrunt-non-interactive \
+          --terragrunt-parallelism 5 \
+          --terragrunt-strict-include \
+          --terragrunt-include-dir ${{ matrix.components }} \
+          --json tgplan.log > ${{ matrix.components }}/tfplan.json
+      
       - name: Redact secrets from tfplan
         run: |
+          cd terragrunt/${{ matrix.components }}
           sed -i 's/"password":"[^"]*"/"password":""/g' tfplan.json
           sed -i 's/"secret_string":"{[^}]*}"/"secret_string":""/g' tfplan.json
-
-
-      # check if usage.json file exists
-      - name: find usage.json
-        id: usage
-        run: |
-          if [ -f usage.json ]; then
-            echo "USAGE_PATH=usage.json" >> "$GITHUB_OUTPUT"
-          else
-            echo "USAGE_PATH=" >> "$GITHUB_OUTPUT"
-          fi
 
       - name: Get Frontdoor token
         uses: IBM/ibm-cloudability-governance/actions/frontdoor/login@v0.1.x
@@ -70,7 +114,7 @@ jobs:
         with:
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
-
+      
       - name: Run Cloudability Cost Estimation
         uses: IBM/ibm-cloudability-governance/actions/cost-estimation@v0.1.x
         continue-on-error: true
@@ -79,20 +123,16 @@ jobs:
           pr-number: ${{ github.event.pull_request.number }}
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
-          deployment-name: "governance-demo-prod"
+          deployment-name: ${{ matrix.components }}
           provider-accounts: |
-             {
-              "module.database:aws_usw2": {
-                "account_id": "${{ secrets.AWS_ACCOUNT_ID }}", 
-                "vendor": "aws"
-              },
+            {
               "*": {
                 "account_id": "${{ secrets.SECOND_AWS_ACCOUNT_ID }}", 
                 "vendor": "aws"
               }
             }
-          tf-plan: "tfplan.json"
-          resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
+          tf-plan: "terragrunt/${{ matrix.components }}/tfplan.json"
+          resource-usage: "terragrunt/${{ matrix.components }}/usage.json"
 
       - name: Run Cloudability Governance Policy Evaluation
         uses: IBM/ibm-cloudability-governance/actions/policy-evaluation@v0.1.x
@@ -102,20 +142,16 @@ jobs:
           pr-number: ${{ github.event.pull_request.number }}
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
-          deployment-name: "governance-demo-prod"
+          deployment-name: ${{ matrix.components }}
           provider-accounts: |
-             {
-              "module.database:aws_usw2": {
-                "account_id": "${{ secrets.AWS_ACCOUNT_ID }}", 
-                "vendor": "aws"
-              },
+            {
               "*": {
                 "account_id": "${{ secrets.SECOND_AWS_ACCOUNT_ID }}", 
                 "vendor": "aws"
               }
             }
-          tf-plan: "tfplan.json"
-          resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
+          tf-plan: "terragrunt/${{ matrix.components }}/tfplan.json"
+          resource-usage: "terragrunt/${{ matrix.components }}/usage.json"
 
       - name: Run Cloudability Recommendation
         uses: IBM/ibm-cloudability-governance/actions/recommendation@v0.1.x
@@ -125,17 +161,13 @@ jobs:
           pr-number: ${{ github.event.pull_request.number }}
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
-          deployment-name: "governance-demo-prod"
+          deployment-name: ${{ matrix.components }}
           provider-accounts: |
             {
-              "aws_usw2": {
-                "account_id": "${{ secrets.AWS_ACCOUNT_ID }}", 
-                "vendor": "aws"
-              },
               "*": {
                 "account_id": "${{ secrets.SECOND_AWS_ACCOUNT_ID }}", 
                 "vendor": "aws"
               }
             }
-          tf-plan: "tfplan.json"
-          resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
+          tf-plan: "terragrunt/${{ matrix.components }}/tfplan.json"
+          resource-usage: "terragrunt/${{ matrix.components }}/usage.json"
