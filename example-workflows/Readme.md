@@ -5,3 +5,6 @@ Sample workflow for a case when repository contains IaC code for a single deploy
 
 ### /multiple-deploymments 
 Sample workflow for a case when IaC code for multiple deployment stacks is contained within a single repository. For eg a multi-region deployment of a single micro-service. 
+
+### /terragrunt-run-all
+Sample workflow for a case when using `terragrunt run-all plan` to generate plan file for multiple deployments.

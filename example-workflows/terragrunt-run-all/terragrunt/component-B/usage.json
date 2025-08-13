@@ -1,0 +1,10 @@
+{
+    "version": "0.1",
+    "resource_usage": {
+        "aws_s3_bucket.my_bucket": {
+            "storage_gb": 10,
+            "rw_requests": 30,
+            "ro_requests": 100000
+        }
+    }
+}
