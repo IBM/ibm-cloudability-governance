@@ -1,4 +1,4 @@
-name: 'Cloudability Policy Evaluation v0.1.4'
+name: 'Cloudability Policy Evaluation v0.2.0'
 description: 'Evaluate a deployment against Cloudability Governance policies'
 inputs:
   github-token:
@@ -16,9 +16,12 @@ inputs:
   deployment-name:
     description: 'Name for the deployment'
     required: true
+  project-name:
+    description: 'Name for the project (optional). If provided and exists, the deployment will be assigned to it. If provided but does not exist, a new project will be created and the deployment will be assigned to it.'
+    required: false
   provider-accounts:
-    description: 'Mapping of Terraform providers in the stack and their associated account'
-    required: true
+    description: 'Mapping of Terraform providers in the deployment and their associated account'
+    required: false
   tf-plan:
     description: 'Path to the Terraform plan file with the terraform plan output in json format'
     required: true
@@ -62,7 +65,7 @@ runs:
             exit 1
             ;;
         esac
-        BINARY_NAME="policy-evaluation-v0.1.4-${OS_SUFFIX}-${ARCH_SUFFIX}"
+        BINARY_NAME="policy-evaluation-v0.2.0-${OS_SUFFIX}-${ARCH_SUFFIX}"
 
         chmod +x "${{ github.action_path }}/${BINARY_NAME}"
         "${{ github.action_path }}/${BINARY_NAME}"
@@ -73,6 +76,7 @@ runs:
         INPUT_CLOUDABILITY_HOST: ${{ inputs.cloudability-host }}
         INPUT_FD_ENV_ID: ${{ inputs.fd-env-id }}
         INPUT_DEPLOYMENT_NAME: ${{ inputs.deployment-name }}
+        INPUT_PROJECT_NAME: ${{ inputs.project-name }}
         INPUT_PROVIDER_ACCOUNTS: ${{ inputs.provider-accounts }}
         INPUT_TF_PLAN: ${{ inputs.tf-plan }}
         INPUT_RESOURCE_USAGE: ${{ inputs.resource-usage }}
