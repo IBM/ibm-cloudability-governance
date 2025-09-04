@@ -317,9 +317,21 @@ We provide 3 separate action templates for each of these steps and they can be c
 
 >**Note**: `Frontdoor Token`,`Github Metadata` and `Cloudability Governance Metadata` are required for running any governance action. 
 
+##### Deployment and Project Configuration
+
+Governance categorizes all resources that get deployed together (for eg: a single terraform plan output) as a `Deployment`. 
+
+You can track all pull-requests that affect a single `Deployment` in your Cloudability Governance section, group multiple deployments into `Project`, and create and attach Governance policies that only apply to a specific project. 
+
+Both `Deployment` and `Project` can be configured in your github action with the inputs `deployment-name` and  `project-name`. If provided then the corresponding action run has an associated `Deployment` and `Project` with it. 
+
+>**Note**: `deployment-name` is a required input while `project-name` is optional 
+
+Deployments and Projects can also be created from wihtin Cloudability Governance `Configuration` page. If you want to associate your action run with an existing deployment, make sure that the input `deployment-name` (and optionally `project-name`) matches the currently existing entry. 
+
 ##### Cloud Provider Configuration
 
-For running Governance actions, a `provider-accounts` input is needed. This is a map of [terraform provider key](https://developer.hashicorp.com/terraform/language/providers/configuration#provider-configuration-1) to a cloud vendor account Id. This is needed to fetch the pricing information from the correct cloud vendor account. 
+For running Governance actions, a `provider-accounts` can be optionally added. This is a map of [terraform provider key](https://developer.hashicorp.com/terraform/language/providers/configuration#provider-configuration-1) to a cloud vendor account Id. If present, this map will be used to fetch the pricing information from the correct cloud vendor account and will associate the provided account information with the corresponding `Deployment`. 
 
 The provider key can either be a wildcard `*`, indicating that this account is the default for any provider keys in the terraform plan, or it can be the exact provider config key as represented in the `configuration.provider_config` map in the terraform plan json. 
 
