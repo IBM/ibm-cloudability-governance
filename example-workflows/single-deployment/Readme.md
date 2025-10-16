@@ -29,7 +29,7 @@ The wildcard `*` indicates the default account information to use if a specific 
 
 ```
 - name: Run Cloudability Cost Estimation
-        uses: IBM/ibm-cloudability-governance/actions/cost-estimation@v0.1.x
+        uses: IBM/ibm-cloudability-governance/actions/cost-estimation@v0.2.x
         continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

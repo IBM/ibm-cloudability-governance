@@ -261,7 +261,7 @@ The inputs for this step can be set as repository level variables and secrets.
 
 ``` yaml
       - name: Get Frontdoor token
-        uses: ibm/ibm-cloudability-governance/actions/frontdoor/login@v0.1.0
+        uses: ibm/ibm-cloudability-governance/actions/frontdoor/login@v0.2.x
         with:
           fd-url: ${{ vars.FD_URL }}
           fd-public-key: ${{ secrets.FD_KEY }}
@@ -279,7 +279,7 @@ Metadata associated with a pull-request and Cloudability Governance is required 
 
 ``` yaml
       - name: Get GitHub PR metadata
-        uses: ibm/ibm-cloudability-governance/actions/github-info@v0.1.0
+        uses: ibm/ibm-cloudability-governance/actions/github-info@v0.2.x
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-number: ${{ github.event.pull_request.number }}
@@ -295,7 +295,7 @@ Metadata associated with a pull-request and Cloudability Governance is required 
 
 ``` yaml
       - name: Run Cloudability Governance Metadata Retrieval
-        uses: ibm/ibm-cloudability-governance/actions/metadata@v0.1.0
+        uses: ibm/ibm-cloudability-governance/actions/metadata@v0.2.x
         with:
           cloudability-host: ${{ vars.CLOUDABILITY_HOST }}
           fd-env-id: ${{ secrets.FD_ENV_ID }}
@@ -343,7 +343,7 @@ Here is an example setup where a default account is used.
 
 ``` yaml
       - name: Run Cloudability Cost Estimation
-        uses: ibm/ibm-cloudability-governance/actions/cost-estimation@v0.1.0
+        uses: ibm/ibm-cloudability-governance/actions/cost-estimation@v0.2.x
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-number: ${{ github.event.pull_request.number }}
@@ -361,7 +361,7 @@ Here is an example setup where a default account is used.
           resource-usage: "usage.json"
 
       - name: Run Cloudability Governance Policy Evaluation
-        uses: ibm/ibm-cloudability-governance/actions/policy-evaluation@v0.1.0
+        uses: ibm/ibm-cloudability-governance/actions/policy-evaluation@v0.2.x
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-number: ${{ github.event.pull_request.number }}
@@ -379,7 +379,7 @@ Here is an example setup where a default account is used.
           resource-usage: "usage.json"
 
       - name: Run Cloudability Recommendation
-        uses: ibm/ibm-cloudability-governance/actions/recommendation@v0.1.0
+        uses: ibm/ibm-cloudability-governance/actions/recommendation@v0.2.x
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-number: ${{ github.event.pull_request.number }}
@@ -405,7 +405,7 @@ Alternatively, this is the setup for a scenario with a specific account alias.
 
 ``` yaml
       - name: Run Cloudability Cost Estimation
-        uses: ibm/ibm-cloudability-governance/actions/cost-estimation@v0.1.0
+        uses: ibm/ibm-cloudability-governance/actions/cost-estimation@v0.2.x
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-number: ${{ github.event.pull_request.number }}

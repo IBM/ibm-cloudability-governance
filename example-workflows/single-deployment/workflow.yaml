@@ -53,26 +53,26 @@ jobs:
           fi
 
       - name: Get Frontdoor token
-        uses: IBM/ibm-cloudability-governance/actions/frontdoor/login@v0.1.x
+        uses: IBM/ibm-cloudability-governance/actions/frontdoor/login@v0.2.x
         with:
           fd-url: ${{ vars.FD_URL }}
           fd-public-key: ${{ secrets.FD_PUBLIC_KEY }}
           fd-secret-key: ${{ secrets.FD_SECRET_KEY }}
 
       - name: Get GitHub PR metadata
-        uses: IBM/ibm-cloudability-governance/actions/github-info@v0.1.x
+        uses: IBM/ibm-cloudability-governance/actions/github-info@v0.2.x
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-number: ${{ github.event.pull_request.number }}
 
       - name: Run Cloudability Governance Metadata Retrieval
-        uses: IBM/ibm-cloudability-governance/actions/metadata@v0.1.x
+        uses: IBM/ibm-cloudability-governance/actions/metadata@v0.2.x
         with:
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
 
       - name: Run Cloudability Cost Estimation
-        uses: IBM/ibm-cloudability-governance/actions/cost-estimation@v0.1.x
+        uses: IBM/ibm-cloudability-governance/actions/cost-estimation@v0.2.x
         continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -95,7 +95,7 @@ jobs:
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
 
       - name: Run Cloudability Governance Policy Evaluation
-        uses: IBM/ibm-cloudability-governance/actions/policy-evaluation@v0.1.x
+        uses: IBM/ibm-cloudability-governance/actions/policy-evaluation@v0.2.x
         continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -118,7 +118,7 @@ jobs:
           resource-usage: ${{ steps.usage.outputs.USAGE_PATH }}
 
       - name: Run Cloudability Recommendation
-        uses: IBM/ibm-cloudability-governance/actions/recommendation@v0.1.x
+        uses: IBM/ibm-cloudability-governance/actions/recommendation@v0.2.x
         continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
