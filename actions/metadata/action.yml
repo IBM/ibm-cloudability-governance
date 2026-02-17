@@ -24,5 +24,5 @@ runs:
         INPUT_CLOUDABILITY_HOST: ${{ inputs.cloudability-host }}
         INPUT_FD_ENV_ID: ${{ inputs.fd-env-id }}
         ACTION_REPO: ${{ github.action_repository }}
-        ACTION_VERSION: "v0.2.4"
+        ACTION_VERSION: "v0.2.4-beta"
         GH_TOKEN: ${{ inputs.github-token || github.token }}
