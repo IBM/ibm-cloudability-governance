@@ -1,6 +1,9 @@
-name: Frontdoor login
+name: Frontdoor login v0.2.4
 description: Login to Frontdoor and fetch the IBM-Apptio authentication token
 inputs:
+  github-token:
+    description: "GitHub token"
+    required: false
   fd-url:
     description: "Frontdoor URL"
     required: true
@@ -17,41 +20,13 @@ runs:
       shell: bash
       run: |
         echo "Login to Frontdoor"
-        
-        OS_SUFFIX=""
-        ARCH_SUFFIX=""
-        
-        case "$RUNNER_OS" in
-          "Windows")
-            OS_SUFFIX="windows"
-            ARCH_SUFFIX="amd64.exe"
-            ;;
-          "Linux")
-            OS_SUFFIX="linux"
-            if [ "$RUNNER_ARCH" == "aarch64" ]; then
-              ARCH_SUFFIX="arm64"
-            else
-              ARCH_SUFFIX="amd64"
-            fi
-            ;;
-          "macOS")
-            OS_SUFFIX="macos"
-            if [ "$RUNNER_ARCH" == "arm64" ]; then
-              ARCH_SUFFIX="arm64"
-            else
-              ARCH_SUFFIX="amd64"
-            fi
-            ;;
-          *)
-            echo "Unsupported operating system: $RUNNER_OS"
-            exit 1
-            ;;
-        esac
-
-        BINARY_NAME="frontdoor-login-v0.2.3-${OS_SUFFIX}-${ARCH_SUFFIX}"
-        chmod +x "${{ github.action_path }}/${BINARY_NAME}"
-        "${{ github.action_path }}/${BINARY_NAME}"
+        chmod +x ${{ github.action_path }}/../../../scripts/gh_asset_exec.sh
+        ${{ github.action_path }}/../../../scripts/gh_asset_exec.sh
       env:
+        STEP_NAME: "frontdoor-login"
+        ACTION_REPO: ${{ github.action_repository }}
+        ACTION_VERSION: "v0.2.4"
+        GH_TOKEN: ${{ inputs.github-token || github.token }}
         INPUT_FD_URL: ${{ inputs.fd-url }}
         INPUT_FD_PUBLIC_KEY: ${{ inputs.fd-public-key }}
         INPUT_FD_SECRET_KEY: ${{ inputs.fd-secret-key }}
