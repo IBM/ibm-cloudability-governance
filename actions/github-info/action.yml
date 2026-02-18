@@ -1,4 +1,4 @@
-name: 'Github Information'
+name: 'Github Information v0.2.4'
 description: 'Retrieve Github Information'
 inputs:
   github-token:
@@ -13,41 +13,13 @@ runs:
     - name: Github Information
       run: |
         echo "Fetching github information"
-        OS_SUFFIX=""
-        ARCH_SUFFIX=""
-        
-        case "$RUNNER_OS" in
-          "Windows")
-            OS_SUFFIX="windows"
-            ARCH_SUFFIX="amd64.exe"
-            ;;
-          "Linux")
-            OS_SUFFIX="linux"
-            if [ "$RUNNER_ARCH" == "aarch64" ]; then
-              ARCH_SUFFIX="arm64"
-            else
-              ARCH_SUFFIX="amd64"
-            fi
-            ;;
-          "macOS")
-            OS_SUFFIX="macos"
-            if [ "$RUNNER_ARCH" == "arm64" ]; then
-              ARCH_SUFFIX="arm64"
-            else
-              ARCH_SUFFIX="amd64"
-            fi
-            ;;
-          *)
-            echo "Unsupported operating system: $RUNNER_OS"
-            exit 1
-            ;;
-        esac
-
-        BINARY_NAME="github-info-v0.2.3-${OS_SUFFIX}-${ARCH_SUFFIX}"
-
-        chmod +x ${{ github.action_path }}/${BINARY_NAME}
-        ${{ github.action_path }}/${BINARY_NAME}
+        chmod +x ${{ github.action_path }}/../../scripts/gh_asset_exec.sh
+        ${{ github.action_path }}/../../scripts/gh_asset_exec.sh
       shell: bash
       env:
+        STEP_NAME: "github-info"
         INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
         INPUT_PR_NUMBER: ${{ inputs.pr-number }}
+        ACTION_REPO: ${{ github.action_repository }}
+        ACTION_VERSION: "v0.2.4"
+        GH_TOKEN: ${{ inputs.github-token || github.token }}
