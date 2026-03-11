@@ -35,7 +35,7 @@ ensures that if a pull request makes a change to `regions/region-a` then the wor
 
 ### Account setup 
 
-Providing a proider account mapping allows Cloudability Governance to consider any custom pricing that might be available for an account when giving cost estimations. 
+Providing a provider account mapping allows Cloudability Governance to consider any custom pricing that might be available for an account when giving cost estimations. 
 
 This structure is a mapping of provider alias to the corresponding AccountID and Cloud vendor.
 
