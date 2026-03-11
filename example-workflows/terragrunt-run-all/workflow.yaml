@@ -124,6 +124,7 @@ jobs:
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
           deployment-name: ${{ matrix.components }}
+          project-name: "The Project"
           provider-accounts: |
             {
               "*": {
@@ -143,6 +144,7 @@ jobs:
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
           deployment-name: ${{ matrix.components }}
+          project-name: "The Project"
           provider-accounts: |
             {
               "*": {
@@ -162,6 +164,7 @@ jobs:
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
           deployment-name: ${{ matrix.components }}
+          project-name: "The Project"
           provider-accounts: |
             {
               "*": {

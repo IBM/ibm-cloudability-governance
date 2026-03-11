@@ -86,6 +86,7 @@ jobs:
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
           deployment-name: "governance-demo-prod"
+          project-name: "governance-demo"
           provider-accounts: |
              {
               "module.database:aws_usw2": {
@@ -109,6 +110,7 @@ jobs:
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
           deployment-name: "governance-demo-prod"
+          project-name: "governance-demo"
           provider-accounts: |
              {
               "module.database:aws_usw2": {
@@ -132,6 +134,7 @@ jobs:
           cloudability-host: ${{ vars.CLDY_HOST }}
           fd-env-id: ${{ vars.FD_ENV_ID }}
           deployment-name: "governance-demo-prod"
+          project-name: "governance-demo"
           provider-accounts: |
             {
               "module.database:aws_usw2": {

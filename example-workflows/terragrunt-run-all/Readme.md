@@ -1,5 +1,5 @@
 ## Structure
-The `terragrunt` folder contains terragrunt files for multiple components. Each subfolder is a separate component and has its own usage input file. 
+The `terragrunt` folder contains terragrunt files for multiple components of a project `The Project`. Each subfolder is a separate component and has its own usage input file. 
 
 ```
     /terragrunt
