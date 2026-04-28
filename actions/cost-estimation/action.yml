@@ -1,4 +1,4 @@
-name: 'Cloudability Cost Estimation v0.2.4'
+name: 'Cloudability Cost Estimation v0.2.5'
 description: 'Estimate the cost of a deployment'
 inputs:
   github-token:
@@ -49,5 +49,5 @@ runs:
         INPUT_TF_PLAN: ${{ inputs.tf-plan }}
         INPUT_RESOURCE_USAGE: ${{ inputs.resource-usage }}
         ACTION_REPO: ${{ github.action_repository }}
-        ACTION_VERSION: "v0.2.4"
+        ACTION_VERSION: "v0.2.5"
         GH_TOKEN: ${{ inputs.github-token || github.token }}
