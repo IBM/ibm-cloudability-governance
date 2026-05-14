@@ -38,7 +38,7 @@
 
     ASSET_NAME="${STEP_NAME}-${ACTION_VERSION}-${OS_SUFFIX}-${ARCH_SUFFIX}"
     DOWNLOAD_PATH="/tmp"
-    HOST_URL="https://github.com/${ACTION_REPO}/releases/download"
+    HOST_URL="https://github.com/IBM/ibm-cloudability-governance/releases/download"
     RELEASE_URL="${HOST_URL}/${ACTION_VERSION}/${ASSET_NAME}"
 
     echo "Downloading asset: ${RELEASE_URL}"
