@@ -23,6 +23,5 @@ runs:
         STEP_NAME: "metadata"
         INPUT_CLOUDABILITY_HOST: ${{ inputs.cloudability-host }}
         INPUT_FD_ENV_ID: ${{ inputs.fd-env-id }}
-        ACTION_REPO: ${{ github.action_repository }}
         ACTION_VERSION: "v0.2.5"
         GH_TOKEN: ${{ inputs.github-token || github.token }}

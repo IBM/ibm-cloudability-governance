@@ -20,6 +20,5 @@ runs:
         STEP_NAME: "github-info"
         INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
         INPUT_PR_NUMBER: ${{ inputs.pr-number }}
-        ACTION_REPO: ${{ github.action_repository }}
         ACTION_VERSION: "v0.2.5"
         GH_TOKEN: ${{ inputs.github-token || github.token }}
