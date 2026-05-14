@@ -45,12 +45,7 @@
 
     # download the asset using gh if the token is available and the asset is not downloaded
     if [ ! -f "${DOWNLOAD_PATH}/${ASSET_NAME}" ]; then
-        if [ -n "${GH_TOKEN:-}" ]; then
-            gh release download ${ACTION_VERSION} --pattern ${ASSET_NAME} --dir ${DOWNLOAD_PATH} --repo ${ACTION_REPO} || \
-			curl -sSfL -o "${DOWNLOAD_PATH}/${ASSET_NAME}" "${RELEASE_URL}"
-        else
-            curl -sSfL -o "${DOWNLOAD_PATH}/${ASSET_NAME}" "${RELEASE_URL}"
-        fi
+      curl -sSfL -o "${DOWNLOAD_PATH}/${ASSET_NAME}" "${RELEASE_URL}"
     fi
 
 	# check if the asset was downloaded
