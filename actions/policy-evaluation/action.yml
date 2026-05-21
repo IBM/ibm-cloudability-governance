@@ -7,6 +7,15 @@ inputs:
   pr-number:
     description: 'Pull Request Number'
     required: true
+  comments-off:
+    description: 'Disable PR comments'
+    required: false
+  checkruns-off:
+    description: 'Disable check runs'
+    required: false
+  checkrun-name:
+    description: 'Custom name for the check run'
+    required: false
   cloudability-host:
     description: 'Cloudability Host URL for fetching governance metadata'
     required: true
@@ -43,6 +52,9 @@ runs:
         STEP_NAME: "policy-evaluation"
         INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
         INPUT_PR_NUMBER: ${{ inputs.pr-number }}
+        INPUT_COMMENTS_OFF: ${{ inputs.comments-off }}
+        INPUT_CHECKRUNS_OFF: ${{ inputs.checkruns-off }}
+        INPUT_CHECKRUN_NAME: ${{ inputs.checkrun-name }}
         INPUT_CLOUDABILITY_HOST: ${{ inputs.cloudability-host }}
         INPUT_FD_ENV_ID: ${{ inputs.fd-env-id }}
         INPUT_DEPLOYMENT_NAME: ${{ inputs.deployment-name }}
@@ -51,6 +63,6 @@ runs:
         INPUT_TF_PLAN: ${{ inputs.tf-plan }}
         INPUT_RESOURCE_USAGE: ${{ inputs.resource-usage }}
         ACTION_REPO: ${{ github.action_repository }}
-        ACTION_VERSION: "v0.2.4"
+        ACTION_VERSION: "v0.2.8"
         GH_TOKEN: ${{ inputs.github-token || github.token }}
 
