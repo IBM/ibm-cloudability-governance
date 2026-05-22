@@ -25,7 +25,7 @@ runs:
       env:
         STEP_NAME: "frontdoor-login"
         ACTION_REPO: ${{ github.action_repository }}
-        ACTION_VERSION: "v0.2.4"
+        ACTION_VERSION: "v0.2.5"
         GH_TOKEN: ${{ inputs.github-token || github.token }}
         INPUT_FD_URL: ${{ inputs.fd-url }}
         INPUT_FD_PUBLIC_KEY: ${{ inputs.fd-public-key }}
