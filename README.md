@@ -447,3 +447,42 @@ If using YAML file, you can use [js-yaml](https://github.com/nodeca/js-yaml) and
           js-yaml usage.yaml > usage.json
 ```
 </details>
+
+##### Output Control and Customization (v0.2.5+)
+
+The governance actions support optional inputs to control how results are reported:
+
+- **`comments-off`**: Set to `"true"` to suppress PR comments. When disabled, comment content will be saved as a workflow artifact for download.
+- **`checkruns-off`**: Set to `"true"` to suppress GitHub status checks. When disabled, check run payload will be saved as a workflow artifact for download.
+- **`checkrun-name`**: Provide a custom name for GitHub check runs. If not specified, the default format is `{Existing CheckRun Name} - {Deployment Name}`, making it easier to identify and track different deployments.
+
+These options provide flexibility for teams that prefer alternative reporting methods or need to manage multiple deployments with clear identification.
+
+> **Note**: When `comments-off` or `checkruns-off` is enabled, the corresponding output will be saved as a workflow artifact accessible from the workflow run page in GitHub Actions.
+
+<details><summary><code>Example: Using output control options</code></summary>
+
+``` yaml
+      - name: Run Cloudability Cost Estimation
+        uses: ibm/ibm-cloudability-governance/actions/cost-estimation@v0.2.x
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ github.event.pull_request.number }}
+          cloudability-host: ${{ secrets.CLOUDABILITY_HOST }}
+          fd-env-id: ${{ secrets.FD_ENV_ID }}
+          deployment-name: "demo"
+          # Optional: Customize output behavior (v0.2.5+)
+          comments-off: "true"
+          checkruns-off: "false"
+          checkrun-name: "Cost Analysis - Demo Deployment"
+          provider-accounts: |
+            {
+              "*": {
+                "account_id": "${{ secrets.AWS_ACCOUNT_ID }}",
+                "vendor": "aws"
+              }
+            }
+          tf-plan: "tfplan.json"
+          resource-usage: "usage.json"
+```
+</details>
