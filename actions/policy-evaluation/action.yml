@@ -1,4 +1,4 @@
-name: 'Cloudability Policy Evaluation v0.2.4'
+name: 'Cloudability Policy Evaluation v0.2.5'
 description: 'Evaluate a deployment against Cloudability Governance policies'
 inputs:
   github-token:

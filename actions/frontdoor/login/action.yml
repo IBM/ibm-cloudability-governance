@@ -1,4 +1,4 @@
-name: Frontdoor login v0.2.4
+name: Frontdoor login v0.2.5
 description: Login to Frontdoor and fetch the IBM-Apptio authentication token
 inputs:
   github-token:

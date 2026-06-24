@@ -1,4 +1,4 @@
-name: 'Cloudability Metadata v0.2.4'
+name: 'Cloudability Metadata v0.2.5'
 description: 'Retrieve Cloudability Metadata for a repository deployment'
 inputs:
   github-token:

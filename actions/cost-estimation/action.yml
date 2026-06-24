@@ -1,4 +1,4 @@
-name: 'Cloudability Cost Estimation v0.2.4'
+name: 'Cloudability Cost Estimation v0.2.5'
 description: 'Estimate the cost of a deployment'
 inputs:
   github-token:
