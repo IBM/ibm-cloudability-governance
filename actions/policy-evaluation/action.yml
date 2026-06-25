@@ -13,9 +13,6 @@ inputs:
   checkruns-off:
     description: 'Disable check runs'
     required: false
-  checkrun-name:
-    description: 'Custom name for the check run'
-    required: false
   cloudability-host:
     description: 'Cloudability Host URL for fetching governance metadata'
     required: true
@@ -54,7 +51,6 @@ runs:
         INPUT_PR_NUMBER: ${{ inputs.pr-number }}
         INPUT_COMMENTS_OFF: ${{ inputs.comments-off }}
         INPUT_CHECKRUNS_OFF: ${{ inputs.checkruns-off }}
-        INPUT_CHECKRUN_NAME: ${{ inputs.checkrun-name }}
         INPUT_CLOUDABILITY_HOST: ${{ inputs.cloudability-host }}
         INPUT_FD_ENV_ID: ${{ inputs.fd-env-id }}
         INPUT_DEPLOYMENT_NAME: ${{ inputs.deployment-name }}

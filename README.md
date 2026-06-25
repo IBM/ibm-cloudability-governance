@@ -454,9 +454,8 @@ The governance actions support optional inputs to control how results are report
 
 - **`comments-off`**: Set to `"true"` to suppress PR comments. When disabled, comment content will be saved as a workflow artifact for download.
 - **`checkruns-off`**: Set to `"true"` to suppress GitHub status checks. When disabled, check run payload will be saved as a workflow artifact for download.
-- **`checkrun-name`**: Provide a custom name for GitHub check runs. If not specified, the default format is `{Existing CheckRun Name} - {Deployment Name}`, making it easier to identify and track different deployments.
 
-These options provide flexibility for teams that prefer alternative reporting methods or need to manage multiple deployments with clear identification.
+These options provide flexibility for teams that prefer alternative reporting methods or need to manage multiple deployments.
 
 > **Note**: When `comments-off` or `checkruns-off` is enabled, the corresponding output will be saved as a workflow artifact accessible from the workflow run page in GitHub Actions.
 
@@ -474,7 +473,6 @@ These options provide flexibility for teams that prefer alternative reporting me
           # Optional: Customize output behavior (v0.2.5+)
           comments-off: "true"
           checkruns-off: "false"
-          checkrun-name: "Cost Analysis - Demo Deployment"
           provider-accounts: |
             {
               "*": {
