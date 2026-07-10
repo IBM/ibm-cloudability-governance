@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-	OS_SUFFIX=""
+    OS_SUFFIX=""
     ARCH_SUFFIX=""
-	
-	# determine the gh runner OS 
+    
+    # determine the gh runner OS 
     case "$RUNNER_OS" in
       "Windows")
         OS_SUFFIX="windows"
@@ -30,7 +30,7 @@
         ;;
     esac
 
-	# check if action version for the asset was passed
+    # check if action version for the asset was passed
     if [ -z "$ACTION_VERSION" ]; then
           echo "Could not determine action version (ACTION_VERSION was empty)"
           exit 1
@@ -38,27 +38,22 @@
 
     ASSET_NAME="${STEP_NAME}-${ACTION_VERSION}-${OS_SUFFIX}-${ARCH_SUFFIX}"
     DOWNLOAD_PATH="/tmp"
-    HOST_URL="https://github.com/${ACTION_REPO}/releases/download"
+    HOST_URL="https://github.com/IBM/ibm-cloudability-governance/releases/download"
     RELEASE_URL="${HOST_URL}/${ACTION_VERSION}/${ASSET_NAME}"
 
     echo "Downloading asset: ${RELEASE_URL}"
 
-    # download the asset using gh if the token is available and the asset is not downloaded
+    # download the asset if not already downloaded
     if [ ! -f "${DOWNLOAD_PATH}/${ASSET_NAME}" ]; then
-        if [ -n "${GH_TOKEN:-}" ]; then
-            gh release download ${ACTION_VERSION} --pattern ${ASSET_NAME} --dir ${DOWNLOAD_PATH} --repo ${ACTION_REPO} || \
-			curl -sSfL -o "${DOWNLOAD_PATH}/${ASSET_NAME}" "${RELEASE_URL}"
-        else
-            curl -sSfL -o "${DOWNLOAD_PATH}/${ASSET_NAME}" "${RELEASE_URL}"
-        fi
+      curl -sSfL -o "${DOWNLOAD_PATH}/${ASSET_NAME}" "${RELEASE_URL}"
     fi
 
-	# check if the asset was downloaded
-	if [ ! -f "${DOWNLOAD_PATH}/${ASSET_NAME}" ]; then
-		echo "Failed to download asset: ${ASSET_NAME}"
-		exit 1
-	fi
+    # check if the asset was downloaded
+    if [ ! -f "${DOWNLOAD_PATH}/${ASSET_NAME}" ]; then
+        echo "Failed to download asset: ${ASSET_NAME}"
+        exit 1
+    fi
 
-	# start the execution
+    # start the execution
     chmod +x "$DOWNLOAD_PATH/${ASSET_NAME}"
     "$DOWNLOAD_PATH/${ASSET_NAME}"

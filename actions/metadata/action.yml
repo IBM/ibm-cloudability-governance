@@ -1,9 +1,6 @@
-name: 'Cloudability Metadata v0.2.5'
+name: 'Cloudability Metadata v0.2.6'
 description: 'Retrieve Cloudability Metadata for a repository deployment'
 inputs:
-  github-token:
-    description: 'Github Token'
-    required: false
   cloudability-host:
     description: 'Cloudability Host URL for fetching governanve metadata'
     required: true
@@ -23,6 +20,5 @@ runs:
         STEP_NAME: "metadata"
         INPUT_CLOUDABILITY_HOST: ${{ inputs.cloudability-host }}
         INPUT_FD_ENV_ID: ${{ inputs.fd-env-id }}
-        ACTION_REPO: ${{ github.action_repository }}
-        ACTION_VERSION: "v0.2.5"
-        GH_TOKEN: ${{ inputs.github-token || github.token }}
+        ACTION_VERSION: "v0.2.6"
+        GH_TOKEN: ${{ github.token }}
