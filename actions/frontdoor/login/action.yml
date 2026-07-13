@@ -1,4 +1,4 @@
-name: Frontdoor login v0.2.5
+name: Frontdoor login v0.2.6
 description: Login to Frontdoor and fetch the IBM-Apptio authentication token
 inputs:
   github-token:
@@ -24,9 +24,8 @@ runs:
         ${{ github.action_path }}/../../../scripts/gh_asset_exec.sh
       env:
         STEP_NAME: "frontdoor-login"
-        ACTION_REPO: ${{ github.action_repository }}
-        ACTION_VERSION: "v0.2.5"
-        GH_TOKEN: ${{ inputs.github-token || github.token }}
+        ACTION_VERSION: "v0.2.6"
+        GH_TOKEN: ${{ github.token }}
         INPUT_FD_URL: ${{ inputs.fd-url }}
         INPUT_FD_PUBLIC_KEY: ${{ inputs.fd-public-key }}
         INPUT_FD_SECRET_KEY: ${{ inputs.fd-secret-key }}
